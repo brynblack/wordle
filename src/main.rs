@@ -2,17 +2,23 @@ const WORD: &str = "girl";
 
 fn main() {
     std::io::stdin().lines().for_each(|guess| {
+        let guess = guess.unwrap();
+
+        if guess.len() != WORD.len() {
+            println!("Word length is {} letters!", WORD.len());
+            return;
+        }
+
         let correct_letters: String = guess
-            .unwrap()
             .chars()
-            .filter(|&c| WORD.contains(c))
+            .filter(|&letter| WORD.contains(letter))
             .collect();
 
-        if WORD == correct_letters {
+        if correct_letters == WORD {
             println!("You Win!");
             std::process::exit(0);
         } else {
-            println!("{}", correct_letters);
+            println!("Correct letters: {}", correct_letters);
         }
     });
 }
