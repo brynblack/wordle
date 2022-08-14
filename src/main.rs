@@ -11,6 +11,18 @@ fn main() {
             return;
         }
 
+        let letters_in_place: String = guess
+            .chars()
+            .enumerate()
+            .map(|(i, c)| {
+                if WORD.chars().nth(i).unwrap() == c {
+                    c
+                } else {
+                    'X'
+                }
+            })
+            .collect();
+
         let correct_letters: String = guess
             .chars()
             .filter(|&letter| WORD.contains(letter))
@@ -29,6 +41,7 @@ fn main() {
 
             println!("Correct letters: {}", correct_letters);
             println!("You have {} guesses remaining", MAX_GUESSES - tries);
+            println!("{}", letters_in_place);
         }
     });
 }
