@@ -1,10 +1,11 @@
 use rand::Rng;
 use std::{fs, io, process};
 
+const FILE_NAME: &str = "words";
 const MAX_GUESSES: u8 = 6;
 
 fn main() {
-    let contents = fs::read_to_string("words").unwrap();
+    let contents = fs::read_to_string(FILE_NAME).unwrap();
     let words: Vec<&str> = contents.lines().collect();
     let index: usize = rand::thread_rng().gen_range(0..words.len());
     let word = words[index];
@@ -47,8 +48,8 @@ fn main() {
             }
 
             println!("Correct letters: {}", correct_letters);
+            println!("Letters in place: {}", letters_in_place);
             println!("You have {} guesses remaining", MAX_GUESSES - tries);
-            println!("{}", letters_in_place);
         }
     });
 }
