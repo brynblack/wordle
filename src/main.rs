@@ -1,13 +1,20 @@
-const WORD: &str = "girl";
+use rand::Rng;
+use std::{fs, io, process};
+
 const MAX_GUESSES: u8 = 6;
 
 fn main() {
+    let contents = fs::read_to_string("words").unwrap();
+    let words: Vec<&str> = contents.lines().collect();
+    let index: usize = rand::thread_rng().gen_range(0..words.len());
+    let word = words[index];
+
     let mut tries = 0;
-    std::io::stdin().lines().for_each(|guess| {
+    io::stdin().lines().for_each(|guess| {
         let guess = guess.unwrap();
 
-        if guess.len() != WORD.len() {
-            println!("Word length is {} letters!", WORD.len());
+        if guess.len() != word.len() {
+            println!("Word length is {} letters!", word.len());
             return;
         }
 
@@ -15,7 +22,7 @@ fn main() {
             .chars()
             .enumerate()
             .map(|(i, c)| {
-                if WORD.chars().nth(i).unwrap() == c {
+                if word.chars().nth(i).unwrap() == c {
                     c
                 } else {
                     'X'
@@ -25,18 +32,18 @@ fn main() {
 
         let correct_letters: String = guess
             .chars()
-            .filter(|&letter| WORD.contains(letter))
+            .filter(|&letter| word.contains(letter))
             .collect();
 
-        if correct_letters == WORD {
+        if correct_letters == word {
             println!("You Win!");
-            std::process::exit(0);
+            process::exit(0);
         } else {
             tries += 1;
 
             if tries >= MAX_GUESSES {
-                println!("You Lost! The word was {}", WORD);
-                std::process::exit(0);
+                println!("You Lost! The word was {}", word);
+                process::exit(0);
             }
 
             println!("Correct letters: {}", correct_letters);
